@@ -16,13 +16,16 @@ import java.util.UUID;
 @Transactional
 public class PacienteService {
 
-    @Autowired
-    private PacienteRepository pacienteRepository;
+    private final PacienteRepository pacienteRepository;
 
-    @Autowired
-    private UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
 
-    // Cadastrar novo paciente
+    public PacienteService(PacienteRepository pacienteRepository, UsuarioService usuarioService) {
+        this.pacienteRepository = pacienteRepository;
+        this.usuarioService = usuarioService;
+    }
+
+
     public PacienteDTO cadastrarPaciente(PacienteDTO paciente) {
         if (pacienteRepository.existsByNomeAndDataNascimento(paciente.getNome(), paciente.getDataNascimento())) {
             throw new IllegalArgumentException("Paciente já cadastrado.");
@@ -36,18 +39,16 @@ public class PacienteService {
         return pacienteRepository.save(paciente.convertToPaciente()).convertToPacienteDTO();
     }
 
-    // Listar todos os pacientes
+
     public List<Paciente> listarTodosPacientes() {
         return pacienteRepository.findAll();
     }
 
-    // Buscar paciente por ID
     public Paciente buscarPorId(UUID id) {
         return pacienteRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Paciente não encontrado."));
     }
 
-    // Atualizar informações do paciente
     public Paciente atualizarPaciente(UUID id, Paciente pacienteAtualizado) {
         Paciente pacienteExistente = buscarPorId(id);
         pacienteExistente.setNome(pacienteAtualizado.getNome());
@@ -57,7 +58,7 @@ public class PacienteService {
         return pacienteRepository.save(pacienteExistente);
     }
 
-    // Excluir paciente
+
     public void excluirPaciente(UUID id) {
         if (!pacienteRepository.existsById(id)) {
             throw new IllegalArgumentException("Paciente não encontrado.");

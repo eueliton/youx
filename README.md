@@ -12,3 +12,17 @@ O frontend foi desenvolvido em Vue.JS 3
 
 # BANCO DE DADOS 
 Pode executar um PostgreSQL via DOCKER executado o arquivo docket-compose na raiz do projeto.
+
+
+# LOGINS DEFAULTS CRIADOS PARA CADA PERFIL
+Enfermeiro=>
+admin@clinica.com
+admin123
+
+Médico=>
+medico@clinica.com
+admin123
+
+Paciente=>
+paciente@clinica.com
+admin123
